@@ -23,12 +23,11 @@ class softmax():
         exps_sum = exps.sum(axis=1)
 
         for i in range(exps.shape[0]):
-            # FIXME RuntimeWarning: invalid value encountered in true_divide exps[i] /= exps_sum[i]
-            # FIXME x.min = -14878338.6839, x.max = -1010.88076834
             exps[i] /= exps_sum[i]
 
         return exps
 
+    # code borrow from
     # https://stackoverflow.com/questions/42934036/building-the-derivative-of-softmax-in-tensorflow-from-a-numpy-version
     def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         J = - grad[..., None] * grad[:, None, :] # off-diagonal Jacobian

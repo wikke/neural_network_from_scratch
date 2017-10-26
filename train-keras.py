@@ -11,7 +11,7 @@ def train():
     model = Sequential()
     model.add(Conv2D(filters=4, kernel_size=3, strides=3, padding='valid', input_shape=(28,28,1), activation='relu'))
     model.add(Conv2D(filters=4, kernel_size=3, strides=3, padding='valid', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
     model.add(Flatten())
     model.add(Dense(10, activation='softmax'))
@@ -23,7 +23,6 @@ def train():
     for e in range(EPOCHS):
         X, y = utils.get_batch(TRAIN_SIZE, 'train')
         loss = model.train_on_batch(X, y)
-        # print(loss)
 
         if (e+1) % 20 == 0:
             X, y = utils.get_batch(dataset='cv')

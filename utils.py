@@ -52,9 +52,6 @@ def cal_loss(true, pred, model):
 
     entropy_loss = -np.sum(true * np.log(pred) + (1 - true) * np.log(1 - pred)) / n
     l2_loss = model.get_l2_loss() / n
-    # squared_weights, param_num = model.get_l2_weights_num()
-    # l2_loss = np.sum(squared_weights) / (2.0 * param_num)
-
     loss = entropy_loss + l2_loss
 
     return loss, entropy_loss, l2_loss
