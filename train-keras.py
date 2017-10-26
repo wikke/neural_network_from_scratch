@@ -17,7 +17,7 @@ def train():
     model.add(Dense(10, activation='softmax'))
 
     sgd = SGD(lr=0.01, momentum=0.9)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    model.compile(optimizer=sgd, loss='binary_crossentropy')
     model.summary()
 
     for e in range(EPOCHS):

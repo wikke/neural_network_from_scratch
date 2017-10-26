@@ -24,5 +24,5 @@ class flatten():
         self.last_shape = x.shape
         return np.reshape(x, (x.shape[0], -1))
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         return np.reshape(grad, self.last_shape)

@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 
 class seq():
-    def __init__(self, input_shape, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def __init__(self, input_shape, lr=0.01, momentum=None, l2_lambda=0.1):
         self.input_shape = input_shape
         self.lr = lr
         self.momentum = momentum

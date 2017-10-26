@@ -22,7 +22,7 @@ class dropout():
     def forward(self, x):
         return x
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         mask = np.zeros(grad.shape).flatten()
         l = mask.shape[0]
         mask[np.random.choice(l, int(l * self.pass_ratio), replace=False)] = 1

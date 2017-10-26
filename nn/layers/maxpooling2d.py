@@ -47,7 +47,7 @@ class maxpooling2d():
 
         return out
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         error_out = np.zeros(self.last_shape)
 
         for i in range(error_out.shape[0]):

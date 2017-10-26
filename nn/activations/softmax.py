@@ -29,7 +29,7 @@ class softmax():
         return exps
 
     # https://stackoverflow.com/questions/42934036/building-the-derivative-of-softmax-in-tensorflow-from-a-numpy-version
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         J = - grad[..., None] * grad[:, None, :] # off-diagonal Jacobian
         iy, ix = np.diag_indices_from(J[0])
         J[:, iy, ix] = grad * (1. - grad) # diagonal

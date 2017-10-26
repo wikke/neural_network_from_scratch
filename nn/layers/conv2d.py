@@ -7,13 +7,13 @@ class conv2d():
         self.strides = self.kernel_size
         self.resize = self.filters * self.kernel_size * self.kernel_size
 
-        self.weights, self.last_delta_weight = None, None
+        self.weights, self.last_dw = None, None
 
     def get_weights(self):
-        return [self.input_shape, self.filters, self.kernel_size, self.resize, self.weights, self.last_delta_weight]
+        return [self.input_shape, self.filters, self.kernel_size, self.resize, self.weights, self.last_dw]
 
     def set_weights(self, weights):
-        self.input_shape, self.filters, self.kernel_size, self.resize, self.weights, self.last_delta_weight = weights
+        self.input_shape, self.filters, self.kernel_size, self.resize, self.weights, self.last_dw = weights
 
     def get_l2_loss(self):
         return np.sum(self.weights * self.weights), self.filters * self.kernel_size * self.kernel_size * self.input_shape[2]
@@ -23,7 +23,7 @@ class conv2d():
         self.input_shape = input_shape
 
         self.weights = np.random.uniform(-1e-4, 1e-4, (self.filters, self.kernel_size, self.kernel_size, self.input_shape[2]))
-        self.last_delta_weight = np.zeros((self.filters, self.kernel_size, self.kernel_size, self.input_shape[2]))
+        self.last_dw = np.zeros((self.filters, self.kernel_size, self.kernel_size, self.input_shape[2]))
 
     def get_output_shape(self):
         return (self.input_shape[0] // self.strides, self.input_shape[1] // self.strides, self.filters)
@@ -48,7 +48,7 @@ class conv2d():
 
         return out
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         # error: (None, out_h, out_w, filters)
         # dw: (filters, kernel_size, kernel_size, channel)
         # grad_out: (None, h, w, channel)
@@ -77,11 +77,14 @@ class conv2d():
         # l2 Regularization
         dw += (l2_lambda * self.weights)
 
-        # momentum
-        dw += momentum * self.last_delta_weight
+        dw *= lr
 
-        self.weights += lr * dw
-        self.last_delta_weight = dw
+        # momentum
+        if momentum is not None:
+            dw += momentum * self.last_dw
+            self.last_dw = dw
+
+        self.weights += dw
 
         grad_out = grad_out / (batch_size * self.resize)
         return grad_out

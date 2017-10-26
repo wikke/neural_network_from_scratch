@@ -3,5 +3,7 @@
 .ipynb_checkpoints
 __pycache__
 .idea
-weights/*
-datasets
+datasets/Fashion-MNIST
+datasets/MNIST/*.gz
+datasets/pics/*.png
+weights/weights*

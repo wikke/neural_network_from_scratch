@@ -5,13 +5,13 @@ from nn.activations import sigmoid, relu, softmax
 import utils
 
 LR = 0.001
-MOMENTUM = 0.9
+MOMENTUM = None
 L2_LAMBDA = 0.1
 
 def build_model():
     model = seq(input_shape=(28, 28, 1), lr=LR, momentum=MOMENTUM, l2_lambda=L2_LAMBDA)
 
-    model.add(conv2d.conv2d(filters=4))
+    model.add(conv2d.conv2d(filters=8))
     model.add(relu.relu())
     # model.add(conv2d.conv2d(filters=4))
     # model.add(relu.relu())

@@ -4,8 +4,9 @@ class fc():
     def __init__(self, units):
         self.units = units
 
-        self.W, self.last_dw = None, None
+        self.W = None
         self.b = np.random.uniform(-1e-4, 1e-4, (units,))
+        self.last_dw = None
         self.last_db = np.zeros((units,))
 
     def get_weights(self):
@@ -32,23 +33,27 @@ class fc():
         self.last_input = x
         return np.dot(x, self.W) + self.b
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
+        grad_out = np.dot(grad, self.W.T)
+
         dw = np.dot(self.last_input.T, grad)
         db = np.mean(grad, axis=0)
 
         # l2 Regularization
         dw += (l2_lambda * self.W)
 
+        dw *= lr
+        db *= lr
+
         # momentum
-        dw += momentum * self.last_dw
-        db += momentum * self.last_db
-        self.last_dw = dw
-        self.last_db = db
+        if momentum is not None:
+            dw += momentum * self.last_dw
+            db += momentum * self.last_db
 
-        grad_out = np.dot(grad, self.W.T)
+            self.last_dw = dw
+            self.last_db = db
 
-        # udpate at last
-        self.W += lr * dw
-        self.b += lr * db
+        self.W += dw
+        self.b += db
 
         return grad_out

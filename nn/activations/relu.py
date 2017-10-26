@@ -20,6 +20,6 @@ class relu():
         x[x < 0] = 0
         return x
 
-    def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
+    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
         grad[grad < 0] = 0
         return grad
