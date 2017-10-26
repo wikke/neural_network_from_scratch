@@ -6,7 +6,7 @@
 
 ## Features Implemented
 
-### Back Bropagation Algorithm
+### Back Propagation Algorithm
 
 Definitely
 
