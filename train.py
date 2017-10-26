@@ -17,7 +17,6 @@ def train():
         print('loss {:.8f} = entropy {:.8f} + l2 {:.8f} | {} samples'
               .format(np.mean(loss), np.mean(entropy_loss), np.mean(l2_reg_loss), (e+1) * TRAIN_SIZE))
 
-        # back传入是delta（即到了output这一层，误差delta关于自身的求导，也就是自身）
         grad = y - pred
         model.backward(grad)
 
@@ -33,9 +32,9 @@ def validate(model):
     print('-'*50)
     print('Validate Dataset, loss {:.8f}, acc {:.4f}'.format(loss, accuracy))
 
-    if loss < 0.1 and not lr_diminished:
-        print('\n\n******* Decrease LR to {} *******\n\n'.format(model.get_lr() / 10))
-        model.set_lr(model.get_lr() / 10)
+    if loss < 1.0 and not lr_diminished:
+        print('\n\n******* Decrease LR to {} *******\n\n'.format(model.get_lr() / 20))
+        model.set_lr(model.get_lr() / 20)
         lr_diminished = True
 
     if min_loss > loss:
