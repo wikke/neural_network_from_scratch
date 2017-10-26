@@ -1,0 +1,7 @@
+*.gz
+*.pyc
+.ipynb_checkpoints
+__pycache__
+.idea
+weights
+datasets
