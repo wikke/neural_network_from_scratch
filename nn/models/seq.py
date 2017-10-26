@@ -21,13 +21,20 @@ class seq():
         layer.set_input_shape(last_shape)
         self.layers.append(layer)
 
+    # def get_l2_weights_num_old(self):
+    #     squared_weights, param_num = 0.0, 0
+    #     for l in self.layers:
+    #         w, n = l.get_l2_weights_num()
+    #         squared_weights += w
+    #         param_num += n
+    #     return squared_weights, param_num
+
     def get_l2_loss(self):
-        l2_loss, param_num = 0.0, 0
+        loss = 0.0
         for l in self.layers:
-            l, p = l.get_l2_loss()
-            l2_loss += l
-            param_num += p
-        return (l2_loss * self.l2_lambda) / param_num
+            loss += l.get_weight_squared_sum()
+
+        return (loss * self.l2_lambda) / 2.0
 
     def summary(self):
         print(self.input_shape)
@@ -60,5 +67,6 @@ class seq():
 
         layer_num = len(self.layers)
         for i in range(layer_num):
-            grad = np.clip(grad, -0.1, 0.1)
+            # FIXME check this?
+            grad = np.clip(grad, -1.0, 1.0)
             grad = self.layers[layer_num - i - 1].backward(grad, lr=self.lr, momentum=self.momentum, l2_lambda=self.l2_lambda)

@@ -11,8 +11,8 @@ class maxpooling2d():
     def set_weights(self, weights):
         self.pool_size, self.strides, self.input_shape = weights
 
-    def get_l2_loss(self):
-        return (0.0, 0)
+    def get_weight_squared_sum(self):
+        return 0.0
 
     def set_input_shape(self, input_shape):
         assert len(input_shape) == 3

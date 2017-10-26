@@ -16,8 +16,8 @@ class dropout():
     def set_weights(self, weights):
         self.input_shape = weights[0]
 
-    def get_l2_loss(self):
-        return (0.0, 0)
+    def get_weight_squared_sum(self):
+        return 0.0
 
     def forward(self, x):
         return x

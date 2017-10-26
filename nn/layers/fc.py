@@ -15,9 +15,8 @@ class fc():
     def set_weights(self, weights):
         self.input_shape, self.W, self.b, self.last_dw, self.last_db = weights
 
-    def get_l2_loss(self):
-        # TODO check if no this.b considered
-        return np.sum(self.W * self.W), self.input_shape[0] * self.units
+    def get_weight_squared_sum(self):
+        return np.sum(self.W * self.W)
 
     def set_input_shape(self, input_shape):
         assert len(input_shape) == 1

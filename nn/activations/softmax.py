@@ -13,8 +13,8 @@ class softmax():
     def set_weights(self, weights):
         self.input_shape = weights[0]
 
-    def get_l2_loss(self):
-        return (0.0, 0)
+    def get_weight_squared_sum(self):
+        return 0.0
 
     def forward(self, x):
         # stable softmax
@@ -24,6 +24,7 @@ class softmax():
 
         for i in range(exps.shape[0]):
             # FIXME RuntimeWarning: invalid value encountered in true_divide exps[i] /= exps_sum[i]
+            # FIXME x.min = -14878338.6839, x.max = -1010.88076834
             exps[i] /= exps_sum[i]
 
         return exps

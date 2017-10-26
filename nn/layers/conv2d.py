@@ -15,8 +15,9 @@ class conv2d():
     def set_weights(self, weights):
         self.input_shape, self.filters, self.kernel_size, self.resize, self.weights, self.last_dw = weights
 
-    def get_l2_loss(self):
-        return np.sum(self.weights * self.weights), self.filters * self.kernel_size * self.kernel_size * self.input_shape[2]
+    def get_weight_squared_sum(self):
+        return np.sum(self.weights * self.weights)
+            #, self.filters * self.kernel_size * self.kernel_size * self.input_shape[2]
 
     def set_input_shape(self, input_shape):
         assert len(input_shape) == 3

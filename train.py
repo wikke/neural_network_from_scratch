@@ -13,12 +13,11 @@ def train():
         X, y = utils.get_batch(TRAIN_SIZE, 'train')
 
         pred = model.forward(X)
-        l2_reg_loss = model.get_l2_loss()
-        entropy_loss = utils.cross_entropy(y, pred)
-        loss = entropy_loss + l2_reg_loss
+        loss, entropy_loss, l2_reg_loss = utils.cal_loss(y, pred, model)
         print('loss {:.8f} = entropy {:.8f} + l2 {:.8f} | {} samples'
               .format(np.mean(loss), np.mean(entropy_loss), np.mean(l2_reg_loss), (e+1) * TRAIN_SIZE))
 
+        # back传入是delta（即到了output这一层，误差delta关于自身的求导，也就是自身）
         grad = y - pred
         model.backward(grad)
 
