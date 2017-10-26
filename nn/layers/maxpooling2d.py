@@ -1,15 +1,15 @@
 import numpy as np
 
 class maxpooling2d():
-    def __init__(self, pool_size=2, stride=2):
+    def __init__(self, pool_size=2, strides=2):
         self.pool_size = pool_size
-        self.stride = stride
+        self.strides = strides
 
     def get_weights(self):
-        return [self.pool_size, self.stride, self.input_shape]
+        return [self.pool_size, self.strides, self.input_shape]
 
     def set_weights(self, weights):
-        self.pool_size, self.stride, self.input_shape = weights
+        self.pool_size, self.strides, self.input_shape = weights
 
     def get_l2_loss(self):
         return (0.0, 0)
@@ -19,12 +19,12 @@ class maxpooling2d():
         self.input_shape = input_shape
 
     def get_output_shape(self):
-        return (self.input_shape[0] // self.stride, self.input_shape[1] // self.stride, self.input_shape[2])
+        return (self.input_shape[0] // self.strides, self.input_shape[1] // self.strides, self.input_shape[2])
 
     def forward(self, x):
         s = x.shape
         self.last_shape = s
-        height, width = s[1] // self.stride, s[2] // self.stride
+        height, width = s[1] // self.strides, s[2] // self.strides
 
         out = np.zeros((s[0], height, width, s[3]))
         self.last_max_pos = np.zeros((s[0], height, width, s[3]))
@@ -34,8 +34,16 @@ class maxpooling2d():
                 for h in range(height):
                     for w in range(width):
                         zone = x[i, h:h+self.pool_size, w:w+self.pool_size, j]
-                        out[i, h, w, j] = np.max(zone)
-                        self.last_max_pos[i, h, w, j] = int(np.argmax(zone))
+                        max_value = np.max(zone)
+                        max_idx = (zone == max_value).flatten()
+
+                        if np.sum(max_idx) == 1:
+                            self.last_max_pos[i, h, w, j] = int(np.argmax(zone))
+                        else:
+                            pos = np.random.choice(np.argwhere(max_idx==True).flatten())
+                            self.last_max_pos[i, h, w, j] = int(pos)
+
+                        out[i, h, w, j] = max_value
 
         return out
 

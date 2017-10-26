@@ -4,6 +4,7 @@ class conv2d():
     def __init__(self, filters):
         self.filters = filters
         self.kernel_size = 3
+        self.strides = self.kernel_size
         self.resize = self.filters * self.kernel_size * self.kernel_size
 
         self.weights, self.last_delta_weight = None, None
@@ -25,7 +26,7 @@ class conv2d():
         self.last_delta_weight = np.zeros((self.filters, self.kernel_size, self.kernel_size, self.input_shape[2]))
 
     def get_output_shape(self):
-        return (self.input_shape[0] - self.kernel_size + 1, self.input_shape[1] - self.kernel_size + 1, self.filters)
+        return (self.input_shape[0] // self.strides, self.input_shape[1] // self.strides, self.filters)
 
     def forward(self, x):
         # x: (None, h, w, channel)
@@ -34,21 +35,14 @@ class conv2d():
 
         self.last_input = x
         batch_size, h, w, channels = x.shape
-        out_h, out_w = h - self.kernel_size + 1, w - self.kernel_size + 1
+        out_h, out_w = h // self.strides, w // self.strides
         out = np.zeros((batch_size, out_h, out_w, self.filters))
 
-        # for b in range(batch_size):
         for f in range(self.filters):
             for i in range(out_h):
                 for j in range(out_w):
-                    # kernel_size, kernel_size, channel
-                    # x[b, i:i+self.kernel_size, j:j+self.kernel_size]
-
-                    # kernel_size, kernel_size, channel
-                    # self.weights[f]
-                    # out[:, i, j, f] = np.sum(x[:, i:i+self.kernel_size, j:j+self.kernel_size] * self.weights[f], axis=0)
-
-                    tmp = x[:, i:i+self.kernel_size, j:j+self.kernel_size] * self.weights[f]
+                    ii, jj = i * self.strides, j * self.strides
+                    tmp = x[:, ii:ii + self.kernel_size, jj:jj + self.kernel_size] * self.weights[f]
                     tmp = np.reshape(tmp, (tmp.shape[0], -1))
                     out[:, i, j, f] = np.sum(tmp, axis=1)
 
@@ -74,16 +68,8 @@ class conv2d():
                     for h_inc in range(self.kernel_size):
                         for w_inc in range(self.kernel_size):
                             for c in range(self.input_shape[2]):
-                                # error-out = weights * e
-
-                                # weight: (filters, kernel_size, kernel_size, channel)
-                                # e: (batch_size, error_h, error_w, filters)
-                                # grad_out: (batch_size, kernel_size, kernel_size, channel)
-
                                 grad_out[:, h+h_inc, w+w_inc, c] += self.weights[f, h_inc, w_inc, c] * e
 
-                                # weight-delta = input-image * e
-                                # self.last_input: (None, h, w, channel)
                                 dw[f, h_inc, w_inc, c] += np.sum(self.last_input[:, h+h_inc, w+w_inc, c] * e)
 
         dw = dw / (batch_size * self.resize)

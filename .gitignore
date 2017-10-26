@@ -3,5 +3,5 @@
 .ipynb_checkpoints
 __pycache__
 .idea
-weights
+weights/*
 datasets

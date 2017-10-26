@@ -34,7 +34,6 @@ class fc():
 
     def backward(self, grad, lr=0.01, momentum=0.9, l2_lambda=0.1):
         dw = np.dot(self.last_input.T, grad)
-        # FIXME mean ?
         db = np.mean(grad, axis=0)
 
         # l2 Regularization

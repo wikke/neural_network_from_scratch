@@ -5,7 +5,7 @@ from nn.activations import sigmoid, relu, softmax
 import utils
 
 LR = 0.01
-MOMENTUM = 0.5
+MOMENTUM = 0.9
 L2_LAMBDA = 0.1
 
 def build_model():
@@ -45,6 +45,6 @@ def evaluate_model(model):
     accuracy = 0.0
     for i in range(pred.shape[0]):
         if np.argmax(pred[i]) == np.argmax(y[i]):
-            accuracy += 1 / X.shape[0]
+            accuracy += 1.0 / X.shape[0]
 
     return loss, accuracy
