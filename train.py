@@ -34,9 +34,9 @@ def validate(model):
     print('-'*50)
     print('Validate Dataset, loss {:.8f}, acc {:.4f}'.format(loss, accuracy))
 
-    if loss < 0.05 and not lr_diminished:
-        print('\n\n******* Decrease LR to {} *******\n\n'.format(model.get_lr() / 50))
-        model.set_lr(model.get_lr() / 50)
+    if loss < 0.1 and not lr_diminished:
+        print('\n\n******* Decrease LR to {} *******\n\n'.format(model.get_lr() / 10))
+        model.set_lr(model.get_lr() / 10)
         lr_diminished = True
 
     if min_loss > loss:

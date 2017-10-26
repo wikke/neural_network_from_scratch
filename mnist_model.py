@@ -4,7 +4,7 @@ from nn.layers import fc, conv2d, flatten, dropout, maxpooling2d
 from nn.activations import sigmoid, relu, softmax
 import utils
 
-LR = 0.01
+LR = 0.001
 MOMENTUM = 0.9
 L2_LAMBDA = 0.1
 
