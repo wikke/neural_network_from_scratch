@@ -58,6 +58,6 @@ class seq():
         self.trained_samples += grad.shape[0]
 
         layer_num = len(self.layers)
-        for i in range(layer_num):
+        for i in reversed(range(layer_num)):
             grad = np.clip(grad, -1.0, 1.0)
-            grad = self.layers[layer_num - i - 1].backward(grad, lr=self.lr, momentum=self.momentum, l2_lambda=self.l2_lambda)
+            grad = self.layers[i].backward(grad, lr=self.lr, momentum=self.momentum, l2_lambda=self.l2_lambda)

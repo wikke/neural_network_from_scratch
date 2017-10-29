@@ -13,9 +13,9 @@ def train():
         X, y = utils.get_batch(TRAIN_SIZE, 'train')
 
         pred = model.forward(X)
-        loss, entropy_loss, l2_reg_loss = utils.cal_loss(y, pred, model)
+        loss, entropy_loss, l2_loss = utils.cal_loss(y, pred, model)
         print('loss {:.8f} = entropy {:.8f} + l2 {:.8f} | {} samples'
-              .format(np.mean(loss), np.mean(entropy_loss), np.mean(l2_reg_loss), (e+1) * TRAIN_SIZE))
+              .format(np.mean(loss), np.mean(entropy_loss), np.mean(l2_loss), (e+1) * TRAIN_SIZE))
 
         grad = y - pred
         model.backward(grad)
