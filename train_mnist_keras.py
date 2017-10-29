@@ -1,5 +1,5 @@
 import numpy as np
-import utils
+import mnist_utils
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
 from keras.optimizers import SGD
@@ -21,11 +21,11 @@ def train():
     model.summary()
 
     for e in range(EPOCHS):
-        X, y = utils.get_batch(TRAIN_SIZE, 'train')
+        X, y = mnist_utils.get_batch(TRAIN_SIZE, 'train')
         loss = model.train_on_batch(X, y)
 
         if (e+1) % 20 == 0:
-            X, y = utils.get_batch(dataset='cv')
+            X, y = mnist_utils.get_batch(dataset='cv')
             loss = model.test_on_batch(X, y)
 
             pred = model.predict_on_batch(X)

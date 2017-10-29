@@ -52,17 +52,21 @@ Actually I had achieved 90% accuracy, but somehow I lost it. It's obviously that
 
 ### Scripts
 
-- train:
+- train MNIST
 
-`python train.py`
+`python train_mnist.py`
 
-- test
+- test MNIST
 
-`python test.py --weight ./weights/weights-252160-0.797545-0.8575`
+`python test_mnist.py --weight ./weights/weights-252160-0.797545-0.8575`
 
-- inference
+- inference hand written digits
 
-`python inference.py --dir ./datasets/pics --weight ./weights/weights-252160-0.797545-0.8575`
+`python inference_mnist.py --dir ./datasets/pics --weight ./weights/weights-252160-0.797545-0.8575`
+
+- train RNN
+
+`python train_rnn.py`
 
 ### Attentions
 

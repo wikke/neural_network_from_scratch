@@ -2,7 +2,7 @@ import numpy as np
 from nn.models.seq import seq
 from nn.layers import fc, conv2d, flatten, dropout, maxpooling2d
 from nn.activations import sigmoid, relu, softmax
-import utils
+import mnist_utils
 
 LR = 0.001
 MOMENTUM = 0.9
@@ -24,9 +24,9 @@ def build_model():
     return model
 
 def evaluate_model(model):
-    X, y = utils.get_batch(dataset='cv')
+    X, y = mnist_utils.get_batch(dataset='cv')
     pred = model.forward(X)
-    loss, entropy_loss, l2_reg_loss = utils.cal_loss(y, pred, model)
+    loss, entropy_loss, l2_reg_loss = mnist_utils.cal_loss(y, pred, model)
 
     accuracy = 0.0
     for i in range(pred.shape[0]):

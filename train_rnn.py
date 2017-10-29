@@ -2,7 +2,6 @@ import numpy as np
 from nn.models.seq import seq
 from nn.layers import rnn, fc
 from nn.activations import softmax
-import utils
 
 EPOCHS = 1000000
 BATCH_SIZE = 16
@@ -38,10 +37,20 @@ def gen(batch_size):
 
     return X, y
 
+def cal_loss(true, pred, model):
+    n = true.shape[0]
+
+    entropy_loss = -np.sum(true * np.log(pred) + (1 - true) * np.log(1 - pred)) / n
+    l2_loss = model.get_l2_loss() / n
+    loss = entropy_loss + l2_loss
+
+    return loss, entropy_loss, l2_loss
+
+
 def evaluate(model, batch_size=BATCH_SIZE, verbose=False):
     X, y = gen(batch_size)
     pred = model.forward(X)
-    loss, entropy_loss, l2_loss = utils.cal_loss(y, pred, model)
+    loss, entropy_loss, l2_loss = cal_loss(y, pred, model)
 
     accuracy = 0.0
     for b in range(batch_size):
@@ -63,7 +72,7 @@ def main():
     for e in range(EPOCHS):
         X, y = gen(BATCH_SIZE)
         pred = model.forward(X)
-        loss, entropy_loss, l2_loss = utils.cal_loss(y, pred, model)
+        loss, entropy_loss, l2_loss = cal_loss(y, pred, model)
         # print('loss {:.8f} = entropy {:.8f} + l2 {:.8f} | {} samples'
         #       .format(np.mean(loss), np.mean(entropy_loss), np.mean(l2_loss), (e + 1) * BATCH_SIZE))
 
