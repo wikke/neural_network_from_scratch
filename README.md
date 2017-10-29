@@ -4,34 +4,26 @@
 > 
 > I'm just feeling that: **When neural network goes deep into code, you have to go back to mathematics.**
 
-## Features Implemented
+Implement a neural network framework from scratch, and train with 2 examples:
 
-### Back Propagation Algorithm
+- MNIST Classifier
+- Time Series Prediction
 
-Definitely
+## Neural Network Framework
 
-### Model
+- Back Propagation Algorithm
+- Model: Sequential(seq)
+- Layers: dense(fc), conv2d, flatten, maxpooling2d, dropout
+- Activations: relu, sigmoid, softmax
+- Optimizor & Training
+    - Initial learning rate 0.001, set to 5e-5 after loss < 1.0
+    - SGD(with momentum)
+    - Gradients Clipping
+    - l2 Regularization
 
-Sequential(seq)
+## Examples 1. MNIST Classifier
 
-### Layers
-
-dense(fc), conv2d, flatten, maxpooling2d, dropout
-
-### Activations
-
-relu, sigmoid, softmax
-
-### Optimizor & Training
-
-- Initial learning rate 0.001, set to 5e-5 after loss < 1.0
-- SGD(with momentum)
-- Gradients Clipping
-- l2 Regularization
-
-## MNIST Recognizer Example
-
-### Network
+### Netwrok Architecture
 
 - Input:(None, 28, 28, 1)
 - Conv2D(relu)
@@ -64,17 +56,27 @@ Actually I had achieved 90% accuracy, but somehow I lost it. It's obviously that
 
 `python inference_mnist.py --dir ./datasets/pics --weight ./weights/weights-252160-0.797545-0.8575`
 
-- train RNN
+## Examples 2. RNN Example
+
+Training dataset goes like this:
+
+```
+     X             y
+1 0 0 ... 0      1  0
+0 0 0 ... 0      0  1
+0 0 0 ... 0      0  1
+1 0 0 ... 0      1  0
+1 0 0 ... 0      1  0
+```
+
+Pattern is obviously, right?
+
+### Network Architecture
+
+- Input:(None, TIME_STEPS, INPUT_DIM)
+- RNN(RNN_UNITS)
+- Full-Connect(2, with softmax)
+
+### Scripts
 
 `python train_rnn.py`
-
-### Attentions
-
-If you meet
-
-`ImportError: libSM.so.6: cannot open shared object file: No such file or directory`
-
-on Ubuntu Server, just run command below:
-
-`apt-get install libsm6 libxrender1 libfontconfig1`
-
