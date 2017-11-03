@@ -25,12 +25,10 @@ class softmax():
         for i in range(exps.shape[0]):
             exps[i] /= exps_sum[i]
 
+        self.last_out = exps
         return exps
 
-    # code borrow from
-    # https://stackoverflow.com/questions/42934036/building-the-derivative-of-softmax-in-tensorflow-from-a-numpy-version
-    def backward(self, grad, lr=0.01, momentum=None, l2_lambda=0.1):
-        J = - grad[..., None] * grad[:, None, :] # off-diagonal Jacobian
-        iy, ix = np.diag_indices_from(J[0])
-        J[:, iy, ix] = grad * (1. - grad) # diagonal
-        return J.sum(axis=1)
+    # softmax derivative: s * (1 - s), same with sigmoid
+    # since "a softmax for two dimensions (events) is exactly the sigmoid function"
+    def backward(self, grad, lr=0.1, momentum=None, l2_lambda=0.1):
+        return grad * self.last_out * (1 - self.last_out)
